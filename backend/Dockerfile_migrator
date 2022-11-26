@@ -1,0 +1,42 @@
+FROM python:3.8
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+COPY requirements.txt /app/
+COPY . /app/
+RUN apt-get update
+RUN apt-get -y install default-mysql-client
+RUN pip install boto3
+RUN pip install -r requirements.txt 
+# CMD python manage.py migrate
+CMD python manage.py loaddata dump.json
+
+# command
+# docker image build -f Dockerfile_migrator -t migrator:latest .
+# backend_path=/Users/ricky/dev/Scraping/Takigen-scraping/backend/
+# docker container run --rm -it -v $backend_path:/app --name migrator migrator:latest
+# docker image rm -f migrator
+
+# command multiarchitect 
+# docker buildx build -f Dockerfile_migrator --push --platform=linux/arm64,linux/amd64 -t <AWS ECR tag name> .
+# migrator 
+# docker buildx build -f Dockerfile_migrator --push --platform=linux/arm64,linux/amd64 -t public.ecr.aws/j1q2i1c5/migrator:latest .
+# dumper 
+# docker buildx build -f Dockerfile_migrator --push --platform=linux/arm64,linux/amd64 -t public.ecr.aws/j1q2i1c5/dumper:latest .
+
+#=========================
+
+# compose 使わない時にネットワークを明示的に指定
+# docker container run --rm -it --net bridge -v /dev/shm:/dev/shm $PWD:/app --name recruit-power recruit-power:latest
+
+# driver用
+# docker container run --rm -it --net bridge -v /dev/shm:/dev/shm -v $PWD/python_files/:/app -p 4444:4444 --name driver seleniarm/standalone-chromium:latest
+# docker container run --rm -it --net bridge -v /dev/shm:/dev/shm -p 4444:4444 --name driver selenium/standalone-chrome
+# driver (マウントしない)
+# docker container run --rm -it --net bridge -p 4444:4444 --name driver seleniarm/standalone-chromium:latest
+
+
+# ==========================
+
+# docker container run --rm -it --name chrome selenium/standalone-chrome:latest
+# docker container exec -it chrome bin/bash
