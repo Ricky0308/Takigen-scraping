@@ -178,9 +178,9 @@ CORS_ALLOWED_ORIGINS = [
 # CELERY_BROKER_URL = "redis://localhost:6379"
 
 from kombu.utils.url import safequote
-aws_access_key = safequote("AKIAVX3DKFPIAYUZTLDT")
+aws_access_key = safequote(env("AWS_ACCESS_KEY"))
 # aws_access_key = safequote("AKIAVX3DKFPIAYUZTLAB") #fake
-aws_secret_key = safequote("cvepFGN66SqqURXqJEvPLOAjAAR34DS3WNEQXTX6")
+aws_secret_key = safequote(env("cvepFGN66SqqURXqJEvPLOAjAAR34DS3WNEQXTX6"))
 CELERY_BROKER_URL = "sqs://{aws_access_key}:{aws_secret_key}@".format(
     aws_access_key=aws_access_key, aws_secret_key=aws_secret_key,
 )
@@ -188,7 +188,7 @@ CELERY_DEFAULT_QUEUE = "myQ"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'predefined_queues': {
         'celery': {
-            'url': 'https://sqs.ap-northeast-1.amazonaws.com/394808404944/myQ',
+            'url': env("BROKER_URL"),
             'access_key_id': aws_access_key,
             'secret_access_key': aws_secret_key,
         }
