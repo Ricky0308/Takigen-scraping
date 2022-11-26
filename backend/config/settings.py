@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import urllib
 import os
 import datetime
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-59usqld!yba+o%d*!=uxm=9$6qalpkwdn9w4@*-#x(x9kn&t8^"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = [
     "HR-friend-LB-122647274.ap-northeast-1.elb.amazonaws.com"
@@ -95,15 +99,15 @@ DATABASES = {
     #     "ENGINE": "django.db.backends.mysql",
     #     "NAME": "scraping",
     #     "USER": "root",
-    #     "PASSWORD": "ryosuke0308mysql",
+    #     "PASSWORD": env("DB_PASS_LOCAL"),
     # }
     # for deploy
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "main",
-        "USER": "Ricky",
-        "PASSWORD": "83nd40!8)(7h5)())dk5bh63",
-        "HOST" : "hr-friend-db.cfmaeubqjnwr.ap-northeast-1.rds.amazonaws.com",
+        "USER": env("DB_USER_DEPLOY"),
+        "PASSWORD": env("DB_PASS_DEPLOY"),
+        "HOST" : env("DB_URL_DEPLOY"),
         "PORT" : "3306"
     }
 }
