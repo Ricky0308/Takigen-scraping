@@ -1,0 +1,20 @@
+version: "3"
+services:
+  # chrome-driver:
+  #   image: seleniarm/standalone-chromium:latest
+  #   ports:
+  #     - 4444:4444
+  #     - 7900:7900
+  #   volumes:
+  #     - /dev/shm:/dev/shm
+  #   tty: true
+
+  celery-worker:
+    build:
+      context: $PWD/backend/
+      dockerfile: $PWD/docker/celery/Dockerfile
+    ports:
+      - 6379:6379
+    volumes:
+      - ./backend:/app
+    tty: true

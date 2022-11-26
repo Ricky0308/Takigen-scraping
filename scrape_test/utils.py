@@ -1,0 +1,1 @@
+path_to_driver = '/Users/ricky/dev/scraping/drivers/chromedriver'
