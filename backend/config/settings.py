@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import urllib
 import os
 import datetime
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-59usqld!yba+o%d*!=uxm=9$6qalpkwdn9w4@*-#x(x9kn&t8^"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = [
     "HR-friend-LB-122647274.ap-northeast-1.elb.amazonaws.com"
@@ -95,15 +99,15 @@ DATABASES = {
     #     "ENGINE": "django.db.backends.mysql",
     #     "NAME": "scraping",
     #     "USER": "root",
-    #     "PASSWORD": "ryosuke0308mysql",
+    #     "PASSWORD": env("DB_PASS_LOCAL"),
     # }
     # for deploy
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "main",
-        "USER": "Ricky",
-        "PASSWORD": "83nd40!8)(7h5)())dk5bh63",
-        "HOST" : "hr-friend-db.cfmaeubqjnwr.ap-northeast-1.rds.amazonaws.com",
+        "USER": env("DB_USER_DEPLOY"),
+        "PASSWORD": env("DB_PASS_DEPLOY"),
+        "HOST" : env("DB_URL_DEPLOY"),
         "PORT" : "3306"
     }
 }
@@ -174,9 +178,9 @@ CORS_ALLOWED_ORIGINS = [
 # CELERY_BROKER_URL = "redis://localhost:6379"
 
 from kombu.utils.url import safequote
-aws_access_key = safequote("AKIAVX3DKFPIAYUZTLDT")
+aws_access_key = safequote(env("AWS_ACCESS_KEY"))
 # aws_access_key = safequote("AKIAVX3DKFPIAYUZTLAB") #fake
-aws_secret_key = safequote("cvepFGN66SqqURXqJEvPLOAjAAR34DS3WNEQXTX6")
+aws_secret_key = safequote(env("cvepFGN66SqqURXqJEvPLOAjAAR34DS3WNEQXTX6"))
 CELERY_BROKER_URL = "sqs://{aws_access_key}:{aws_secret_key}@".format(
     aws_access_key=aws_access_key, aws_secret_key=aws_secret_key,
 )
@@ -184,7 +188,7 @@ CELERY_DEFAULT_QUEUE = "myQ"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'predefined_queues': {
         'celery': {
-            'url': 'https://sqs.ap-northeast-1.amazonaws.com/394808404944/myQ',
+            'url': env("BROKER_URL"),
             'access_key_id': aws_access_key,
             'secret_access_key': aws_secret_key,
         }
