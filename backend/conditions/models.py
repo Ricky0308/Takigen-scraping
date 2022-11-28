@@ -34,7 +34,7 @@ class ConditionCluster(models.Model):
         default='1',
         null = False, 
         blank = False
-    ) 
+    )
     # スクレイピングしている最中の場合 True となる
     # in_progress is True while the cluster is being used for scraping
     in_progress = models.BooleanField(default=False, null=False)
@@ -80,6 +80,12 @@ class ConditionCluster(models.Model):
             "num_of_conditions" : len(completed_conditions)
         }
         return data 
+    
+    # def save(self, *args, **kwargs):
+    #     print("!!!!!!!!!!!!!!!")
+    #     print(type(self.file.file))
+    #     print(dir(self.file.file.file))
+    #     super().save(*args, **kwargs)
 
 
 class Condition(models.Model):
