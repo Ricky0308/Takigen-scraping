@@ -33,7 +33,8 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = [
-    "HR-friend-LB-122647274.ap-northeast-1.elb.amazonaws.com"
+    "HR-friend-LB-122647274.ap-northeast-1.elb.amazonaws.com", 
+    "localhost"
 ]
 
 
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     "conditions",
     "scraping",
     "config", 
+    "storages"
 ]
 
 MIDDLEWARE = [
@@ -95,21 +97,21 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     # for local 
-    # "default": {
-    #     "ENGINE": "django.db.backends.mysql",
-    #     "NAME": "scraping",
-    #     "USER": "root",
-    #     "PASSWORD": env("DB_PASS_LOCAL"),
-    # }
-    # for deploy
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "main",
-        "USER": env("DB_USER_DEPLOY"),
-        "PASSWORD": env("DB_PASS_DEPLOY"),
-        "HOST" : env("DB_URL_DEPLOY"),
-        "PORT" : "3306"
+        "NAME": "scraping",
+        "USER": "root",
+        "PASSWORD": env("DB_PASS_LOCAL"),
     }
+    #for deploy
+    # "default": {
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "NAME": "main",
+    #     "USER": env("DB_USER_DEPLOY"),
+    #     "PASSWORD": env("DB_PASS_DEPLOY"),
+    #     "HOST" : env("DB_URL_DEPLOY"),
+    #     "PORT" : "3306"
+    #}
 }
 
 
@@ -141,12 +143,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-# デプロイ時にstatifilesをweb上で表示するためのurl
-STATIC_URL = "static/"
-
-# fileが保存されるサーバ上のパス
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -174,24 +170,41 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
+# AWS
+from kombu.utils.url import safequote
+AWS_ACCESS_KEY_ID = safequote(env("AWS_ACCESS_KEY_ID"))
+AWS_SECRET_ACCESS_KEY = safequote(env("AWS_SECRET_ACCESS_KEY"))
+
 # Celery 
 # CELERY_BROKER_URL = "redis://localhost:6379"
-
-from kombu.utils.url import safequote
-aws_access_key = safequote(env("AWS_ACCESS_KEY"))
-# aws_access_key = safequote("AKIAVX3DKFPIAYUZTLAB") #fake
-aws_secret_key = safequote(env("cvepFGN66SqqURXqJEvPLOAjAAR34DS3WNEQXTX6"))
 CELERY_BROKER_URL = "sqs://{aws_access_key}:{aws_secret_key}@".format(
-    aws_access_key=aws_access_key, aws_secret_key=aws_secret_key,
+    aws_access_key=AWS_ACCESS_KEY_ID, aws_secret_key=AWS_SECRET_ACCESS_KEY,
 )
 CELERY_DEFAULT_QUEUE = "myQ"
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'predefined_queues': {
         'celery': {
             'url': env("BROKER_URL"),
-            'access_key_id': aws_access_key,
-            'secret_access_key': aws_secret_key,
+            'access_key_id': AWS_ACCESS_KEY_ID,
+            'secret_access_key': AWS_SECRET_ACCESS_KEY,
         }
     }
 }
 # CELERY_RESULT_BACKEND = "redis://172.17.0.5:6379"
+
+# s3
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_S3_REGION_NAME = "ap-northeast-1"
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERIFY = True
+DEFAULT_FILE_STORAGE = "data.storage_backends.MediaStorage"
+AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
+
+# デプロイ時にstatifilesをweb上で表示するためのurl
+STATIC_URL = "static/"
+
+# fileが保存されるサーバ上のパス
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
