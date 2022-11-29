@@ -152,7 +152,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [ 
-        "config.authentications.AnonymousUserAuthentication",
+        # "config.authentications.AnonymousUserAuthentication",
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
@@ -201,6 +201,7 @@ AWS_DEFAULT_ACL = None
 AWS_S3_VERIFY = True
 DEFAULT_FILE_STORAGE = "data.storage_backends.MediaStorage"
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
+S3_CSV_FOLDER = "csv_files"
 
 # デプロイ時にstatifilesをweb上で表示するためのurl
 STATIC_URL = "static/"

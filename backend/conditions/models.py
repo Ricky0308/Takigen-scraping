@@ -29,7 +29,7 @@ class ConditionCluster(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True)
     data_version = models.CharField(
-        max_length=3, 
+        max_length=3,
         choices=[('1', '1')],
         default='1',
         null = False, 
@@ -55,9 +55,7 @@ class ConditionCluster(models.Model):
         ]
         data = self.show_extended_info()
         data.update({
-            "data_path" : self.data.csv.path,
             "data_file" : self.data.csv, 
-
             "conditions" : conditions, 
         })
         return data

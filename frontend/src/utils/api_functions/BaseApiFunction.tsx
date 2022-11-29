@@ -41,6 +41,8 @@ export const useBaseApiFunction = async(
     }
 
     useEffect(()=>{
+        console.log("useBaseApiFunction!!!!!!!!!!!!")
+        console.log(config)
         request_to_backend()
             .then((res)=>{
                 callback(res);
@@ -90,14 +92,15 @@ export const baseApiFunction = async(
             const headers_with_token = {headers:{"Authorization": "Bearer " + cookies.accesstoken, ...config.headers!}};
             config =  {...config, ...headers_with_token}
         }
-
+        console.log("baseApiFunction!!!!!!!!!!!!")
+        console.log(config)
         if (method === "get"){
             return axios.get(api_url, config)
                 .then(res => {
                     callback(res)
                 })
         }else{
-            return axios.post(api_url, config, data)
+            return axios.post(api_url, data, config)
                 .then(res => {
                     callback(res)
                 })

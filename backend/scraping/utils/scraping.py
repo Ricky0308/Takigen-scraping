@@ -2,6 +2,7 @@ from logs.models import Log
 from scraping.utils.condition_id import condition_id
 from scraping.utils.functions import * 
 import time
+from bs4 import BeautifulSoup
 
 def scrape_mynavi(target_company, condition_obj, driver):
     """
@@ -33,7 +34,8 @@ def scrape_mynavi(target_company, condition_obj, driver):
         print(f"Scraping... page {page}")
         html = BeautifulSoup(driver.page_source, "html.parser")
         a_tags = html.find_all("a", {"id":re.compile("corpNameLink\[\d+\]")})
-        for num, a in enumerate(a_tags):
+        num = 0
+        for num, a in enumerate(a_tags, 1):
             if a.text == f"{target_company}":
                 order = int(page * 100 + num + 1)
                 # ["社名", "検索サイト" ,"検索語", "業種(カテゴリ)", extract_condition("業種(詳細)", "地域", "職種", "福利厚生", "従業員数"), "検索結果数", "表示の有無", "妥当性", "順位", "検索結果の上位%"]
@@ -53,7 +55,7 @@ def scrape_mynavi(target_company, condition_obj, driver):
             next_page = False
     if not found:
         #  is_search_valid => 全てのページの検索ができたかを調べる
-        is_search_valid = page * 100 + num + 1 == result_num
+        is_search_valid = page * 100 + num == result_num
         is_success = is_search_valid
         result = [target_company, "マイナビ", *extract_condition(condition), result_num, False, is_search_valid, None, None]
         new_log = Log(**log_kwargs, text = f"新たなデータを取得しました。")

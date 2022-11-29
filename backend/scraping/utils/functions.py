@@ -1,21 +1,9 @@
-from bs4 import BeautifulSoup
-import requests
-import re
-import pandas as pd
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 import re
 from copy import deepcopy
 import copy
 
-from scraping.utils.condition_id import condition_id
-
-# def start_driver_or_noevent():
-#     try:
-#         if not driver.window_handles:
-#             driver = webdriver.Chrome('/Users/ricky/dev/scraping/drivers/chromedriver')
-#     except:
-#         driver = webdriver.Chrome('/Users/ricky/dev/scraping/drivers/chromedriver')
+from scraping.utils.condition_id import condition_id, conditions
 
 
 def keyword_to_url(keywords):
@@ -46,21 +34,15 @@ def make_ind_category_dict(each_ind):
         result[categ.text] = id_list
     return result
 
-
-def condition_join(words):
-    if words:
-        return ",".join(words)
-    return None
-
 def extract_condition(info_dict):
-    conditions = ["検索語", "業種(カテゴリ)", "業種(詳細)", "地域", "職種", "福利厚生", "従業員数"]
+    conds = ["検索語"] + conditions
     result = []
-    for cond in conditions:
+    for cond in conds:
         if not info_dict.get(cond):
             result.append(None)
         else:
-            cond_str = condition_join(info_dict[cond])
-            result.append(f'"{cond_str}"')
+            cond_str = " / ".join(info_dict[cond])
+            result.append(cond_str)
     return result
 
 def modify_condition_str(cond_str):
@@ -132,6 +114,8 @@ def id_list_from_conditions(cond_categ_list):
 # 条件検索のための関数
 # dataには条件 + 検索語が入る。条件のフォーマットはsearch_infoを参照
 def search(data, driver):
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!data")
+    print(data)
     driver.get("https://job.mynavi.jp/24/pc/corpinfo/displayCorpSearch/index")
     if not data.get("検索語"):
         data["検索語"] = ""
