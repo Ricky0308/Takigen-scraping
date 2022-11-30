@@ -7,8 +7,8 @@ from scraping.utils import scraping
 from django.conf import settings
 import boto3
 
-driver_path = "/usr/bin/chromedriver"
-"/Users/ricky/Desktop/chromedriver"
+driver_path = "/Users/ricky/Desktop/chromedriver"
+"/usr/bin/chromedriver"
 "/Users/ricky/dev/scraping/drivers/chromedriver"
 
 
@@ -24,7 +24,7 @@ def example_task():
     print("celery task successfully started!")
 
 @shared_task
-def scrape_condition(condcluster_id, target_company:str):
+def scrape_condition(condcluster_id):
     """
     parameter:
         condcluster_id : ConditionCluster modelのid
@@ -52,6 +52,12 @@ def scrape_condition(condcluster_id, target_company:str):
     else:
         condcluster.in_progress = True
         condcluster.save()
+    if not condcluster.get_target_str():
+        print("not condcluster.get_target_str()")
+        return 
+    target_company = condcluster.get_target_str()
+    print("target comapny")
+    print(target_company)
     for cond_obj in cond_obj_list:
         if cond_obj.state in ('yet started', 'failed'):
             cond_obj.state = 'in progress'

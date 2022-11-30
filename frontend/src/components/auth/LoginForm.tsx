@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 import { Navigate } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
 import { useCookies } from 'react-cookie';
 
 import { tokenObtainApiUrl } from "../../utils/api_urls";
+import { Box, Button, Paper } from "@mui/material";
 
 type AuthInfo = {
     username : string,
@@ -35,25 +36,33 @@ export const LoginForm = () => {
         <>
             { fail && <LoginFailMessage></LoginFailMessage> }
             {isLogin && <Navigate to="/search" replace={true} />}
-            <form onSubmit={handleSubmit(handleOnSubmit, handleOnError)}>
-                <label htmlFor="userName">Name</label>
-                <input 
-                    id="userName" 
-                    type="text" 
-                    {...register("username", {
-                        required: "*required!",
-                    })}
-                />
-                <label htmlFor="pswd">Password</label>
-                <input 
-                    id="pswd" 
-                    type="password"
-                    {...register("password", {
-                        required:"*required!",
-                    })}
-                />
-                <input type="submit" value="submit" />
-            </form>
+            <Paper sx={{p:2, m:2}}>
+                <form onSubmit={handleSubmit(handleOnSubmit, handleOnError)}>
+                    <Box>
+                        <label htmlFor="userName">Name</label>
+                        <input 
+                            id="userName" 
+                            type="text" 
+                            {...register("username", {
+                                required: "*required!",
+                            })}
+                        />
+                    </Box>
+                    <Box>
+                        <label htmlFor="pswd">Password</label>
+                        <input 
+                            id="pswd" 
+                            type="password"
+                            {...register("password", {
+                                required:"*required!",
+                            })}
+                        />
+                    </Box>
+                    <Button type="submit" value="submit">
+                        Login
+                    </Button>
+                </form>
+            </Paper>
         </>
     )
 }

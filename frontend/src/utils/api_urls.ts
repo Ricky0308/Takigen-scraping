@@ -1,5 +1,8 @@
-export const baseApiUrl = "http://localhost:8000/api/";
+export const baseApiUrl = "http://localhost:8000/api/"
+// "http://hr-friend-lb-122647274.ap-northeast-1.elb.amazonaws.com:8000/api/";
+// "http://localhost:8000/api/"
 export const testApiUrl = baseApiUrl + "test/"
+
 
 // スクレイピングのためのurl
 export const scrapeApiUrl = baseApiUrl + "scrape/"
