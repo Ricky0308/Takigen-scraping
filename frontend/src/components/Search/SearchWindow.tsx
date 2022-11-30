@@ -134,6 +134,9 @@ const WindowDataMode = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
+    console.log("clusterInfo : WindowDatamode");
+    console.log(clusterInfo);
+
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -144,6 +147,7 @@ const WindowDataMode = () => {
 
     const defaultMinWidth = 50;
     const defaultMaxWidth = 200;
+    // ['業種(カテゴリ)', '業種(詳細)', '地域', '職種', '福利厚生', '従業員数', '選考の特徴', '募集の特徴', '募集対象', '募集人数', '受付状況']
     const baseColumns : DataColumn[] = [
         { id: 'id', label: "条件ID"},
         { id: 'company', label: "社名"},
@@ -155,6 +159,11 @@ const WindowDataMode = () => {
         { id: 'job_categ', label: "職種"},
         { id: 'welfare', label: "福利厚生"},
         { id: 'emp_num', label: "従業員数"},
+        { id: 'selec_feat', label: "選考の特徴"},
+        { id: 'target_feat', label: "募集の特徴"},
+        { id: 'targets', label: "募集対象"},
+        { id: 'targets_num', label: "募集人数"},
+        { id: 'recep_state', label: "受付状況"},
         { id: 'total_hit', label: "検索結果数"},
         { id: 'success', label: "ターゲットの有無"},
         { id: 'validity', label: "探索の妥当性"},
@@ -168,8 +177,8 @@ const WindowDataMode = () => {
 
     function createDataRow(...args:string[]):void;
     function createDataRow(
-        id:string, company:string, site:string, keywords:string, industry:string, industry_d:string, location:string, job_categ:string, welfare:string, emp_num:string, total_hit:string, success:string, validity:string, nth_place:string, percentile:string
-    ){ return { id, company, site, keywords, industry, industry_d, location, job_categ, welfare, emp_num, total_hit, success, validity, nth_place, percentile }}
+        id:string, company:string, site:string, keywords:string, industry:string, industry_d:string, location:string, job_categ:string, welfare:string, emp_num:string, selec_feat:string, target_feat:string, targets:string, targets_num:string, recep_state:string,total_hit:string, success:string, validity:string, nth_place:string, percentile:string
+    ){ return { id, company, site, keywords, industry, industry_d, location, job_categ, welfare, emp_num, selec_feat, target_feat, targets, targets_num, recep_state, total_hit, success, validity, nth_place, percentile }}
 
     if (clusterInfo){
         const dataRows : any[] = [];

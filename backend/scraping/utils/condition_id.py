@@ -566,3 +566,5 @@ condition_id = {
   'My CareerBoxで応募可': 'receptionStatus4',
   'インターンシップ・仕事体験あり': 'receptionStatus5'}
 }
+
+conditions = list(condition_id.keys())

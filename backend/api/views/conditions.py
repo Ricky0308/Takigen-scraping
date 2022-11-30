@@ -25,7 +25,6 @@ class CreateCondCluster(APIView):
             new_cluster = ConditionCluster(name = cluster_name, account=request.user.account)
         else:
             new_cluster = ConditionCluster(name = cluster_name)
-        print(request.user)
         new_cluster.save()
         for index, cond in enumerate(conditions):
             new_cond = {}
