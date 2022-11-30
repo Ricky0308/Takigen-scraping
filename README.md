@@ -45,5 +45,4 @@ The service uses celery for it.
 # Structure diagram 
 This is the aws structure diagram of the service. 
 
-![alt text](https://github.com/[Ricky0308]/[Takigen-scraping
-]/blob/[main]/aws_arch.png?raw=true)
+![alt text](https://github.com/[Ricky0308]/[Takigen-scraping]/blob/[main]/aws_arch.png?raw=true)
