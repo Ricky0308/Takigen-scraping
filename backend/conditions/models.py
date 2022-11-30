@@ -1,5 +1,9 @@
 from email.policy import default
 import uuid
+import re
+import requests
+from bs4 import BeautifulSoup
+
 from django.db import models
 from accounts.models import Account
 from .choices import state_choices
@@ -78,12 +82,28 @@ class ConditionCluster(models.Model):
             "num_of_conditions" : len(completed_conditions)
         }
         return data 
-    
-    # def save(self, *args, **kwargs):
-    #     print("!!!!!!!!!!!!!!!")
-    #     print(type(self.file.file))
-    #     print(dir(self.file.file.file))
-    #     super().save(*args, **kwargs)
+
+    def get_target_str(self):
+        """
+            self.target_companyがセットされていたら、self.targetを返す。
+            self.target_companyがセットされていなかったら、target_urlをもとに
+            スクレイピングして、self.target_companyをセットし、その後self.target_companyを返す。
+            target_urlが有効でない場合はNoneを返す
+        """
+        if self.target_company:
+            return self.target_company
+        else:
+            res  = requests.get(self.target_url)
+            dom = BeautifulSoup(res.text, "lxml")
+            t = dom.find("title", {}).text
+            print(t)
+            if re.search("の新卒採用", t):
+                company = t.split("の新卒採用")[0]
+                print("in get_Target_str")
+                return company
+            else:
+                print("ここ")
+                return None
 
 
 class Condition(models.Model):

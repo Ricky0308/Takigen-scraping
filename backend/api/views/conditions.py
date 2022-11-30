@@ -22,9 +22,9 @@ class CreateCondCluster(APIView):
             if not re.match(prefix, target_url.strip(" ")):
                 raise Exception("正しいURLではありません")
         if hasattr(request.user, "account"):
-            new_cluster = ConditionCluster(name = cluster_name, account=request.user.account)
+            new_cluster = ConditionCluster(name = cluster_name, account=request.user.account, target_url=target_url)
         else:
-            new_cluster = ConditionCluster(name = cluster_name)
+            new_cluster = ConditionCluster(name = cluster_name, target_url=target_url)
         new_cluster.save()
         for index, cond in enumerate(conditions):
             new_cond = {}
