@@ -34,11 +34,8 @@ RUN pip install pycurl~=7.44.1
 RUN pip install pymysql
 COPY . /app
 
-# CMD ["bash"]
-# CMD /opt/bin/entry_point.sh
 # CMD "python3 -m celery -A config worker -l info"
 # CMD python3 -m celery -A config worker -l info
-# CMD "/opt/bin/start_worker.sh"
 CMD python3 manage.py runserver 0.0.0.0:8000
 
 # command
@@ -50,9 +47,9 @@ CMD python3 manage.py runserver 0.0.0.0:8000
 # command multiarchitect 
 # docker buildx build --push --platform=linux/arm64,linux/amd64 -t <AWS ECR tag name> .
 # celery-worker 
-# docker buildx build --push --platform=linux/arm64,linux/amd64 -t public.ecr.aws/j1q2i1c5/92fj2hr9:latest .
+# docker buildx build --push --platform=linux/arm64,linux/amd64 -t public.ecr.aws/j1q2i1c5/hr-celerr-worker:latest .
 # backend 
-# docker buildx build --push --platform=linux/arm64,linux/amd64 -t public.ecr.aws/j1q2i1c5/01s0lcnii:latest .
+# docker buildx build --push --platform=linux/arm64,linux/amd64 -t public.ecr.aws/j1q2i1c5/hr-backend-repo .
 
 # command for backend 
 # docker image build -t scraping-backend .

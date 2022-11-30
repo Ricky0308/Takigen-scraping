@@ -7,11 +7,8 @@ from scraping.utils import scraping
 from django.conf import settings
 import boto3
 
-import csv
-
-
-driver_path = "/Users/ricky/Desktop/chromedriver"
-"/usr/bin/chromedriver"
+driver_path = "/usr/bin/chromedriver"
+"/Users/ricky/Desktop/chromedriver"
 "/Users/ricky/dev/scraping/drivers/chromedriver"
 
 

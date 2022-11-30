@@ -97,21 +97,21 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     # for local 
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "scraping",
-        "USER": "root",
-        "PASSWORD": env("DB_PASS_LOCAL"),
-    }
-    #for deploy
     # "default": {
     #     "ENGINE": "django.db.backends.mysql",
-    #     "NAME": "main",
-    #     "USER": env("DB_USER_DEPLOY"),
-    #     "PASSWORD": env("DB_PASS_DEPLOY"),
-    #     "HOST" : env("DB_URL_DEPLOY"),
-    #     "PORT" : "3306"
-    #}
+    #     "NAME": "scraping",
+    #     "USER": "root",
+    #     "PASSWORD": env("DB_PASS_LOCAL"),
+    # }
+    #for deploy
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "main",
+        "USER": env("DB_USER_DEPLOY"),
+        "PASSWORD": env("DB_PASS_DEPLOY"),
+        "HOST" : env("DB_URL_DEPLOY"),
+        "PORT" : "3306"
+    }
 }
 
 
@@ -168,6 +168,8 @@ SIMPLE_JWT = {
 # CORS
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://hr-friend.link",
+    "https://hr-friend.link"
 ]
 
 # AWS
@@ -209,3 +211,9 @@ STATIC_URL = "static/"
 # fileが保存されるサーバ上のパス
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# ssl
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
